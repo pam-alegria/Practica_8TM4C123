@@ -1,81 +1,103 @@
 #include "lib/include.h"
 
-extern void Configurar_UART0(void)
+extern void Configurar_UART3(void)
 {
-    SYSCTL->RCGCUART  = (1<<0);   //Paso 1 (RCGCUART) pag.344 UART/modulo0 0->Disable 1->Enable
-    SYSCTL->RCGCGPIO |= (1<<0);     //Paso 2 (RCGCGPIO) pag.340 Enable clock port A
+    SYSCTL->RCGCUART  = (1<<3);   //Paso 1 (RCGCUART) pag.344 UART/modulo0 0->Disable 1->Enable
+    SYSCTL->RCGCGPIO |= (1<<2);     //Paso 2 (RCGCGPIO) pag.340 Enable clock port A
     //(GPIOAFSEL) pag.671 Enable alternate function
-    GPIOA->AFSEL = (1<<1) | (1<<0);
-    //GPIO Port Control (GPIOPCTL) PA0-> U0Rx PA1-> U0Tx pag.688
-    GPIOA->PCTL = (GPIOA->PCTL&0xFFFFFF00) | 0x00000011;// (1<<0) | (1<<4);//0x00000011
+    GPIOC->AFSEL = (1<<6) | (1<<7);
+    //GPIO Port Control (GPIOPCTL) PC6-> U3Rx PC7-> U3Tx pag.688
+    GPIOC->PCTL = (GPIOC->PCTL&0x11FFFFFF) | 0x11000000;// (1<<0) | (1<<4);//0x00000011
     // GPIO Digital Enable (GPIODEN) pag.682
-    GPIOA->DEN = (1<<0) | (1<<1);//PA1 PA0
+    GPIOC->DEN = (1<<6) | (1<<7);//PA1 PA0
     //UART0 UART Control (UARTCTL) pag.918 DISABLE!!
-    UART0->CTL = (0<<9) | (0<<8) | (0<<0);
+    UART3->CTL = (0<<9) | (0<<8) | (0<<0);
 
     // UART Integer Baud-Rate Divisor (UARTIBRD) pag.914
     /*
-    BRD = 20,000,000 / (16 * 9600) = 130.2
-    UARTFBRD[DIVFRAC] = integer(0.2 * 64 + 0.5) = 14
+    BRD = 80,000,000 / (16 * 19200) = 260.4166667
+    UARTFBRD[DIVFRAC] = integer(0.4166667 * 64 + 0.5) = 27
     */
-    UART0->IBRD = 130;
+    UART3->IBRD = 260;
     // UART Fractional Baud-Rate Divisor (UARTFBRD) pag.915
-    UART0->FBRD = 14;
+    UART3->FBRD = 27;
     //  UART Line Control (UARTLCRH) pag.916
-    UART0->LCRH = (0x3<<5)|(1<<4);
+    UART3->LCRH = (0x3<<5)|(1<<4);
     //  UART Clock Configuration(UARTCC) pag.939
-    UART0->CC =(0<<0);
+    UART3->CC =(0<<0);
     //Disable UART0 UART Control (UARTCTL) pag.918
-    UART0->CTL = (1<<0) | (1<<8) | (1<<9);
-
-
-
+    UART3->CTL = (1<<0) | (1<<8) | (1<<9);
+    
+    
 }
 
 extern char readChar(void)
 {
     //UART FR flag pag 911
     //UART DR data 906
-    int v;
     char c;
-    while((UART0->FR & (1<<4)) != 0 );
-    v = UART0->DR & 0xFF;
-    c = v;
-    return c;
+    while((UART3->FR & (1<<4)) != 0 );
+    c = UART3->DR;
+    return (unsigned char) c;
 }
 extern void printChar(char c)
 {
-    while((UART0->FR & (1<<5)) != 0 );
-    UART0->DR = c;
+    while((UART3->FR & (1<<5)) != 0 );
+    UART3->DR = c;
 }
 extern void printString(char* string)
 {
-    while(*string)
-    {
-        printChar(*(string++));
+    while(*(string)){
+       printChar(*(string++)); 
     }
 }
 
-extern char * readString(char delimitador)
-{
 
-   int i=0;
-   char *string = (char *)calloc(10,sizeof(char));
+extern int readString(char delimitador, char *string)
+{
+   int i = 0;
    char c = readChar();
+
    while(c != delimitador)
-   {
-       *(string+i) = c;
-       i++;
-       if(i%10==0)
-       {
-           string = realloc(string,(i+10)*sizeof(char));
-       }
-       c = readChar();
+   { 
+            string[i] = c;
+            i++;
+            c = readChar(); 
    }
 
-   return string;
+   return i;
+}
+
+
+extern void invertirString(char *string, int i)
+{
+    char aux; 
+
+    for (int j = 0; j < i/2; j++){
+        aux = string[j];
+        string[j] = string[i-1- j]; 
+        string[i-1-j] = aux; 
+    }
 
 }
+
+extern char* agregarNumeros(char *string, char* num, int i)
+{
+    int l = 0;
+    int p = 0;
+    while(l<(i*2)){
+        num[l] = string[p]; 
+        l++;
+        num[l] = p + 1;
+        p++;
+        l++;
+    }
+    
+    return num;
+
+}
+
+
 //Experimento 2
 
 //El envio es su nombre  (rave) 
