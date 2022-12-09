@@ -65,7 +65,7 @@ int main(void)
     /**/
     while (1)
     {
-        char string[] = " ";
+        char string[20] = "NULL";
         int i = readString('%', string);
         invertirString(string, i);
         //printString(string);

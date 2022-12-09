@@ -88,7 +88,7 @@ extern char* agregarNumeros(char *string, char* num, int i)
     while(l<(i*2)){
         num[l] = string[p]; 
         l++;
-        num[l] = p + 1;
+        num[l] = (unsigned char)(p+49);
         p++;
         l++;
     }
