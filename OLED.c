@@ -101,7 +101,7 @@ const uint8_t OledFont[][8] =
 };
 
 // I2C intialization and GPIO alternate function configuration
-void I2C3_Init(void)
+extern void I2C3_Init(void)
 {
 SYSCTL->RCGCGPIO  |= 0x00000008 ; // Enable the clock for port D
 SYSCTL->RCGCI2C   |= 0x00000008 ; // Enable the clock for I2C 3
@@ -126,7 +126,7 @@ static int I2C_wait_till_done(void)
     return I2C3->MCS & 0xE; /* return I2C error code, 0 if no error*/
 }
 
-char I2C3_Wr(int slaveAddr, char memAddr, uint8_t data)
+extern char I2C3_Wr(int slaveAddr, char memAddr, uint8_t data)
 {
 
     char error;
@@ -150,7 +150,7 @@ char I2C3_Wr(int slaveAddr, char memAddr, uint8_t data)
     return 0;       /* no error */
 }
 // Receive one byte of data from I2C slave device
-char I2C3_Write_Multiple(int slave_address, char slave_memory_address, int bytes_count, uint8_t* data)
+extern char I2C3_Write_Multiple(int slave_address, char slave_memory_address, int bytes_count, uint8_t* data)
 {   
     char error;
     if (bytes_count <= 0)
@@ -183,7 +183,7 @@ char I2C3_Write_Multiple(int slave_address, char slave_memory_address, int bytes
 }
 
 //OLED
-void OLED_Command( uint8_t temp){
+extern void OLED_Command( uint8_t temp){
     
 	  I2C3_Wr(0x3C,0x00,temp);
 }
@@ -197,7 +197,7 @@ void OLED_Command( uint8_t temp){
  * 
  ******************************************************************************/
 
-void OLED_Data( uint8_t temp){
+extern void OLED_Data( uint8_t temp){
  
 	  I2C3_Wr(0x3C,0x40,temp);
 	  
@@ -212,7 +212,7 @@ void OLED_Data( uint8_t temp){
  * 
  ******************************************************************************/
 
-void OLED_Init() {
+extern void OLED_Init() {
     
     OLED_Command(OLED_DISPLAYOFF);         // 0xAE
     OLED_Command(OLED_SETDISPLAYCLOCKDIV); // 0xD5
@@ -251,7 +251,7 @@ void OLED_Init() {
  * 
  ******************************************************************************/
 
-void OLED_YX(unsigned char Row, unsigned char Column)
+extern void OLED_YX(unsigned char Row, unsigned char Column)
 {
     OLED_Command( 0xB0 + Row);
     OLED_Command( 0x00 + (8*Column & 0x0F) );
@@ -267,7 +267,7 @@ void OLED_YX(unsigned char Row, unsigned char Column)
  * 
  ******************************************************************************/
 
-void OLED_PutChar(char ch )
+extern void OLED_PutChar(char ch )
 {
     if ( ( ch < 32 ) || ( ch > 127 ) ){
         ch = ' ';
@@ -293,7 +293,7 @@ void OLED_PutChar(char ch )
  * 
  ******************************************************************************/
 
-void OLED_Clear()
+extern void OLED_Clear()
 {
     for ( uint16_t row = 0; row < 8; row++ ) {
         for ( uint16_t col = 0; col < 16; col++ ) {
@@ -313,7 +313,7 @@ void OLED_Clear()
  * 
  ******************************************************************************/
 
-void OLED_Write_String( char *s )
+extern void OLED_Write_String( char *s )
 {
     while (*s) OLED_PutChar( *s++);
 }
@@ -328,7 +328,7 @@ void OLED_Write_String( char *s )
  * 
  ******************************************************************************/
 
-void OLED_Write_Integer(uint8_t  i)
+extern void OLED_Write_Integer(uint8_t  i)
 {
      char s[20];
      sprintf( s, "%d", i );
@@ -345,22 +345,22 @@ void OLED_Write_Integer(uint8_t  i)
  * 
  ******************************************************************************/
 
-void OLED_Write_Float(float f)
+extern void OLED_Write_Float(float f)
 {
-    char* buf11;
+    //char* buf11;
     int status;
-    sprintf( buf11, "%f", f );
-    OLED_Write_String(buf11);
+    //sprintf( buf11, "%f", f );
+    //OLED_Write_String(buf11);
     OLED_Write_String( "     " );
 }
-void Delay_ms(int time_ms)
+extern void Delay_ms(int time_ms)
 {
     int i, j;
     for(i = 0 ; i < time_ms; i++)
         for(j = 0; j < 3180; j++)
             {}  /* excute NOP for 1ms */
 }
-void SystemInit(void)
+extern void SystemInit(void)
 {
     SCB->CPACR |= 0x00f00000;
 }

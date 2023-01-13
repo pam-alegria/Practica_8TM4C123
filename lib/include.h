@@ -7,9 +7,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-//#include <stdio.h>
+#include <stdio.h>
 
 #include "TM4C123GH6PM.h"
+#include "PLL.h"
+#include "UART.h"
+#include "GPIO.h"
 #include "OLED.h"
 
 // Define OLED dimensions

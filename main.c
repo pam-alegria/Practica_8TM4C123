@@ -15,15 +15,20 @@ int main(void)
             /////////////////////
             // Strings
             ///////////////////
+        
+        
             
              OLED_YX( 0, 0 );
+             
              OLED_Write_String( "OLED SSD1306" );
-                             Delay_ms(1000);
+
+             Delay_ms(1000);
 
              OLED_YX(1, 0);
+             
              OLED_Write_String ("TM4C123");
-                         Delay_ms(1000);
-            
+             Delay_ms(1000);
+
             /////////////////////
             // Integer Count
             ////////////////////
@@ -35,8 +40,9 @@ int main(void)
                 OLED_Write_Integer(count);
                 Delay_ms(100);
             }
-            
+            /*            
             OLED_Clear();
+            */
             Delay_ms(100);
             
           
