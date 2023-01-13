@@ -16,8 +16,7 @@ int main(void)
             // Strings
             ///////////////////
         
-        
-            
+    
              OLED_YX( 0, 0 );
              
              OLED_Write_String( "OLED SSD1306" );
