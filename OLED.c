@@ -307,7 +307,7 @@ extern void OLED_PutChar(char ch )
    const uint8_t *base = &OledFont[ch - 32][0];
 
     uint8_t bytes[9];
-    //bytes[0] = 0x40;
+    bytes[0] = 0x40;
     memmove( bytes + 1, base, 8 );
        
 		I2C3_Write_Multiple(0x3C,0x40,9,bytes);

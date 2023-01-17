@@ -29,22 +29,16 @@ int main(void)
              Delay_ms(1000);
 
              OLED_YX(2, 0);
-             OLED_Write_String ("TM4C123");
+             OLED_Write_String ("Leo&Pam");
              Delay_ms(1000);
 
             /////////////////////
             // Integer Count
             ////////////////////
             
-            for (count = 0; count <= 100; count++){
-                OLED_YX(2, 0 );
-                OLED_Write_String( "Count:" );
-                OLED_YX(2, 8);
-                OLED_Write_Integer(count);
-                Delay_ms(100);
-            }
+            
                         
-            OLED_Clear();
+            //OLED_Clear();
             
             Delay_ms(100);
             
