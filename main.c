@@ -5,6 +5,7 @@ int main(void)
 	 I2C3_Init();
 	 OLED_Init();
 	 OLED_Clear();
+     Configurar_PLL(_20MHZ);
     
     // variables for counting
     int count = 0;
@@ -24,7 +25,10 @@ int main(void)
              Delay_ms(1000);
 
              OLED_YX(1, 0);
-             
+             OLED_Write_String ("TM4C123");
+             Delay_ms(1000);
+
+             OLED_YX(2, 0);
              OLED_Write_String ("TM4C123");
              Delay_ms(1000);
 
@@ -39,9 +43,9 @@ int main(void)
                 OLED_Write_Integer(count);
                 Delay_ms(100);
             }
-            /*            
+                        
             OLED_Clear();
-            */
+            
             Delay_ms(100);
             
           
