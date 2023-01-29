@@ -20,16 +20,20 @@ int main(void)
     
              OLED_YX( 0, 0 );
              
-             OLED_Write_String( "OLED SSD1306" );
+             OLED_Write_String( "Ya" );
 
              Delay_ms(1000);
 
              OLED_YX(1, 0);
-             OLED_Write_String ("TM4C123");
+             OLED_Write_String ("Pasenos");
              Delay_ms(1000);
 
              OLED_YX(2, 0);
-             OLED_Write_String ("Leo&Pam");
+             OLED_Write_String ("Profe");
+             Delay_ms(1000);
+
+            OLED_YX(3, 0);
+             OLED_Write_String ("Paro");
              Delay_ms(1000);
 
             /////////////////////
